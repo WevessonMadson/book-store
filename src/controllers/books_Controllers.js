@@ -3,15 +3,18 @@ import { Books } from "../models/books_Model.js";
 
 export async function bookInsert(req, res) {
     try {
-        const { nome, cpf, email } = req.body;
+        const { isbn, titulo, genero, editora, autor } = req.body;
 
-        const cliente = new Books({ nome, cpf, email });
-
-        await cliente.save();
-
-        res.status(201).json({ message: "Cliente cadastrado com sucesso!" });
+        if(!isbn || !titulo || !genero || !editora || !autor) {
+            res.status(400).json({ message: "isbn, titulo, genero, editora e autor, são obrigatórios." })
+        } else {
+            const book = new Books({ isbn, titulo, genero, editora, autor });
+            await book.save();
+            res.status(201).json({ message: "Livro cadastrado com sucesso!" });
+        }
     } catch (error) {
-        console.error(error)
+        console.error(error);
+        res.status(500).json({ message: "Ocorreu um erro interno no servidor." });
     }
 }
 
@@ -19,29 +22,29 @@ export async function getBooks(req, res) {
     try {
         const { id } = req.params;
         if (!id) {
-            const clientes = await Clientes.find();
-            if (!clientes) res.status(204);
+            const books = await Books.find();
+            if (!books) res.status(204);
             else res.status(200).json(clientes);
         } else {
-            let cliente = await Clientes.findOne({ _id: id });
-            if (!cliente) res.status(204);
-            else res.status(200).json(cliente);
+            let book = await Books.findOne({ _id: id });
+            if (!book) res.status(204);
+            else res.status(200).json(book);
         }
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Ocorreu um erro interno no servidor." })
+        console.error(error);
+        res.status(500).json({ message: "Ocorreu um erro interno no servidor." });
     }
 }
 
 export async function bookRemove(req, res) {
     try {
         const { id } = req.params;
-        const cliente = await Books.findById(id);
+        const book = await Books.findById(id);
 
-        if (!cliente) res.status(404).json({ message: "Cliente não encontrado." });
+        if (!book) res.status(404).json({ message: "Livro não encontrado." });
         else {
-            await Clientes.findByIdAndDelete(id);
-            res.status(200).json({ message: "Cliente deletado com sucesso." });
+            await Books.findByIdAndDelete(id);
+            res.status(200).json({ message: "Livro deletado com sucesso." });
         }
     } catch (error) {
         console.error(error);
@@ -52,16 +55,18 @@ export async function bookRemove(req, res) {
 export async function bookUpdate(req, res) {
     try {
         const { id } = req.params;
-        const { nome, cpf, email } = req.body;
+        const { isbn, titulo, genero, editora, autor } = req.body;
 
-        const cliente = await Clientes.findById(id);
-        if (!cliente) res.status(404).json({ message: "Cliente não encontrado." });
+        const book = await Books.findById(id);
+        if (!book) res.status(404).json({ message: "Livro não encontrado." });
         else {
-            cliente.nome = nome ? nome : cliente.nome;
-            cliente.cpf = cpf ? cpf : cliente.cpf;
-            cliente.email = email ? email : cliente.email;
-            await Clientes.findByIdAndUpdate(id, cliente);
-            res.status(200).json({ message: "Cliente alterado com sucesso." });
+            book.isbn = isbn ? isbn : book.isbn;
+            book.titulo = titulo ? titulo : book.titulo;
+            book.genero = genero ? genero : book.genero;
+            book.editora = editora ? editora : book.editora;
+            book.autor = autor ? autor : book.autor;
+            await Books.findByIdAndUpdate(id, book);
+            res.status(200).json({ message: "Livro alterado com sucesso." });
         }
     } catch (error) {
         console.error(error);

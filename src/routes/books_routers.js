@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { bookInsert, getBooks, bookRemove, bookUpdate } from "../controllers/livrosControllers.js";
+import { bookInsert, getBooks, bookRemove, bookUpdate } from "../controllers/books_Controllers.js";
 import { authorization } from "../auth/auth.js";
 
 
