@@ -14,11 +14,6 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
-    type: {
-        type: Number,
-        required: true,
-        default: 1
-    },
     actived: {
         type: Boolean,
         required: true,

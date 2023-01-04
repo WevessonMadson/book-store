@@ -1,10 +1,8 @@
 import { mongoose } from "mongoose";
 mongoose.set('strictQuery', true);
 
-const urlDatabase = process.env.DATABASE_URL;
-
 export const startDB = () => {
-    mongoose.connect(urlDatabase, {
+    mongoose.connect(process.env.DATABASE_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });

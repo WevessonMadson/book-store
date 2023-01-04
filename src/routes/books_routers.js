@@ -2,22 +2,16 @@ import { Router } from "express";
 import { bookInsert, getBooks, bookRemove, bookUpdate } from "../controllers/books_Controllers.js";
 import { authorization } from "../auth/auth.js";
 
-
 const router = Router();
 
-//Endpoint de consulta de todos os livros
-router.get('/livros', authorization, getBooks);
+router.post('/books/register', authorization, bookInsert);
 
-//Endpoint de consulta de um livro pelo id
-router.get('/livros/:id', authorization, getBooks);
+router.get('/books/all', authorization, getBooks);
 
-//Endpoint para cadastrar um novo livro
-router.post('/livros', authorization, bookInsert);
+router.get('/books/:id', authorization, getBooks);
 
-//Endpoint para atualizar os dados de um livro
-router.put('/livros/:id', authorization, bookUpdate);
+router.put('/books/update/:id', authorization, bookUpdate);
 
-//Endpoint para excluir um livro
-router.delete('/livros/:id', authorization, bookRemove);
+router.delete('/books/delete/:id', authorization, bookRemove);
 
 export default router;

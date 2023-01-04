@@ -4,7 +4,7 @@ import { authorization } from "../auth/auth.js";
 
 const router = Router();
 
-router.post('/user/signup', userCadastro);
+router.post('/user/register', userCadastro);
 
 router.post('/user/login', userLogin);
 

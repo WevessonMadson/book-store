@@ -5,12 +5,17 @@ export async function bookInsert(req, res) {
     try {
         const { isbn, titulo, genero, editora, autor } = req.body;
 
-        if(!isbn || !titulo || !genero || !editora || !autor) {
-            res.status(400).json({ message: "isbn, titulo, genero, editora e autor, são obrigatórios." })
+        if (!isbn || !titulo || !genero || !editora || !autor) {
+            res.status(400).json({ message: "isbn, titulo, genero, editora e autor, são obrigatórios." });
         } else {
-            const book = new Books({ isbn, titulo, genero, editora, autor });
-            await book.save();
-            res.status(201).json({ message: "Livro cadastrado com sucesso!" });
+            let book = await Books.findOne({ isbn });
+            if (book) {
+                res.status(409).json({ message: "Livro já cadastrado, verifique." });
+            } else {
+                const book = new Books({ isbn, titulo, genero, editora, autor });
+                await book.save();
+                res.status(201).json({ message: "Livro cadastrado com sucesso!" });
+            }
         }
     } catch (error) {
         console.error(error);
@@ -24,7 +29,7 @@ export async function getBooks(req, res) {
         if (!id) {
             const books = await Books.find();
             if (!books) res.status(204);
-            else res.status(200).json(clientes);
+            else res.status(200).json(books);
         } else {
             let book = await Books.findOne({ _id: id });
             if (!book) res.status(204);
