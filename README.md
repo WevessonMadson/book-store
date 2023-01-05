@@ -4,6 +4,16 @@
 
 API BACK-END PARA PERSISTIR DADOS DE LIVROS NUM BANCO DE DADOS NÃO RELACIONAL HOSPEDADO NA NUVEM, O MONGODB.
 
+## Como usar:
+
+- Ter o NodeJs e o npm instalado na máquina;
+- Baixar ou clonar os arquivos do diretório;
+- Instalar as dependências: <strong>npm install</strong>;
+- Criar um cluster no [🔗MongoDB Atlas](https://www.mongodb.com/it-it/cloud/atlas/register?utm_content=rlsapostreg&utm_source=google&utm_campaign=search_gs_pl_evergreen_atlas_general_retarget-brand-postreg_gic-null_amers-all_ps-all_desktop_eng_lead&utm_term=&utm_medium=cpc_paid_search&utm_ad=&utm_ad_campaign_id=14412646452&adgroup=131761126052&gclid=EAIaIQobChMI-9GM1vyw_AIV6UVIAB18CA7EEAAYASAAEgIkIPD_BwE);
+- Configurar o arquivo <strong>.env</strong>, seguindo o exemplo do <strong>.env.example</strong>;
+- Colocar o projeto para rodar: <strong>npm run dev</strong> ou <strong>npm start</strong>
+- Usar a documentação para testar;
+
 <a href="https://documenter.getpostman.com/view/22751765/2s8Z72Vrov" target="_blank">🔗 Documentação da API</a>
 
 
