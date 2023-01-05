@@ -1,7 +1,5 @@
 # book-store
 
-<img src="./assets/preview.png" alt="Imagem da capa do projeto" />
-
 > Curso de Desenvolvimento Back-end, [🔗SENAC-PE](https://www.pe.senac.br/)
 
 API BACK-END PARA PERSISTIR DADOS DE LIVROS NUM BANCO DE DADOS NÃO RELACIONAL HOSPEDADO NA NUVEM, O MONGODB.
@@ -33,7 +31,7 @@ API BACK-END PARA PERSISTIR DADOS DE LIVROS NUM BANCO DE DADOS NÃO RELACIONAL H
 
 ### Controle de versionamento
 
-- Git e Github (como controle de versionamento)
+- Git e Github
 
 ## 💛 Contato
 
