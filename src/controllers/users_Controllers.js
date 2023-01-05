@@ -75,7 +75,8 @@ export async function userUpdate(req, res) {
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "Ocorreu um erro interno no servidor." });
+        if (error.kind == 'ObjectId') res.status(400).json({ message: "Id passado não é válido. Verifique." });
+        else res.status(500).json({ message: "Ocorreu um erro interno no servidor." });
     }
 }
 
