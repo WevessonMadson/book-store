@@ -24,7 +24,7 @@ export function authorization(req, res, next) {
             case "jwt expired":
                 res.status(401).json({ message: "token expirado" });
                 break;
-            case "invalid signature": case "jwt signature is required":
+            case "invalid signature": case "jwt signature is required": case "jwt must be provided":
                 res.status(401).json({ message: "assinatura inválida" });
                 break;
             case "invalid token": case "jwt malformed":
