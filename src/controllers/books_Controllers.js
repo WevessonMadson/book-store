@@ -91,11 +91,11 @@ export async function bookUpdate(req, res) {
         if (!book) {
             res.status(404).json({ message: "Livro não encontrado." });
         } else {
-            book.isbn = isbn ? isbn : book.isbn;
-            book.titulo = titulo ? titulo : book.titulo;
-            book.genero = genero ? genero : book.genero;
-            book.editora = editora ? editora : book.editora;
-            book.autor = autor ? autor : book.autor;
+            book.isbn = isbn ?? book.isbn;
+            book.titulo = titulo ?? book.titulo;
+            book.genero = genero ?? book.genero;
+            book.editora = editora ?? book.editora;
+            book.autor = autor ?? book.autor;
             
             await Books.findByIdAndUpdate(id, book);
             
