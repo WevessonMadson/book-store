@@ -8,19 +8,19 @@ export async function bookInsert(req, res) {
             res.status(400).json({ message: "isbn, titulo, genero, editora e autor, são obrigatórios." });
         } else {
             let book = await Books.findOne({ isbn });
-            
+
             if (book) {
                 res.status(409).json({ message: "Livro já cadastrado, verifique." });
             } else {
                 const book = new Books({ isbn, titulo, genero, editora, autor });
                 await book.save();
-                
+
                 res.status(201).json({ message: "Livro cadastrado com sucesso!" });
             }
         }
     } catch (error) {
         console.error(error);
-        
+
         res.status(500).json({ message: "Ocorreu um erro interno no servidor." });
     }
 }
@@ -28,30 +28,30 @@ export async function bookInsert(req, res) {
 export async function getBooks(req, res) {
     try {
         const { id } = req.params;
-        
+
         if (!id) {
             const books = await Books.find();
-            
+
             if (!books) {
-                res.status(204);    
+                res.status(204);
             } else {
                 res.status(200).json(books);
             }
         } else {
-            let book = await Books.findOne({ _id: id });
-            
+            let book = await Books.findById(id);
+
             if (!book) {
                 res.status(204);
-            } else { 
+            } else {
                 res.status(200).json(book);
             }
         }
     } catch (error) {
-        console.error(error);
-        
         if (error.kind == 'ObjectId') {
             res.status(400).json({ message: "Id passado não é válido. Verifique." });
         } else {
+            console.error(error);
+
             res.status(500).json({ message: "Ocorreu um erro interno no servidor." });
         }
     }
@@ -60,22 +60,22 @@ export async function getBooks(req, res) {
 export async function bookRemove(req, res) {
     try {
         const { id } = req.params;
-        
+
         const book = await Books.findById(id);
 
         if (!book) {
             res.status(404).json({ message: "Livro não encontrado." });
         } else {
             await Books.findByIdAndDelete(id);
-            
+
             res.status(200).json({ message: "Livro deletado com sucesso." });
         }
     } catch (error) {
-        console.error(error);
-        
         if (error.kind == 'ObjectId') {
             res.status(400).json({ message: "Id passado não é válido. Verifique." });
         } else {
+            console.error(error);
+
             res.status(500).json({ message: "Ocorreu um erro interno no servidor." });
         }
     }
@@ -87,7 +87,7 @@ export async function bookUpdate(req, res) {
         const { isbn, titulo, genero, editora, autor } = req.body;
 
         const book = await Books.findById(id);
-        
+
         if (!book) {
             res.status(404).json({ message: "Livro não encontrado." });
         } else {
@@ -96,17 +96,17 @@ export async function bookUpdate(req, res) {
             book.genero = genero ?? book.genero;
             book.editora = editora ?? book.editora;
             book.autor = autor ?? book.autor;
-            
+
             await Books.findByIdAndUpdate(id, book);
-            
+
             res.status(200).json({ message: "Livro alterado com sucesso." });
         }
     } catch (error) {
-        console.error(error);
-        
         if (error.kind == 'ObjectId') {
             res.status(400).json({ message: "Id passado não é válido. Verifique." });
         } else {
+            console.error(error);
+
             res.status(500).json({ message: "Ocorreu um erro interno no servidor." });
         }
     }

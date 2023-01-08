@@ -8,11 +8,12 @@ const salt = bcrypt.genSaltSync(saltRounds);
 export async function userCadastro(req, res) {
     try {
         const { nome, email, password } = req.body;
+
         if (!nome || !email || !password) {
-            res.status(404).json({ message: "nome, email e password são obrigatórios para se cadastrar." });
+            res.status(400).json({ message: "nome, email e password são obrigatórios para se cadastrar." });
         } else {
             let user = await Users.findOne({ email });
-            
+
             if (user) {
                 res.status(409).json({ message: "Email já cadastrado, verifique." });
             } else {
@@ -21,15 +22,15 @@ export async function userCadastro(req, res) {
                     email,
                     password: bcrypt.hashSync(`${password}`, salt)
                 });
-                
+
                 await user.save();
-                
-                res.status(201).json({ message: "Usuário criado com sucesso, já pode se autenticar." });
+
+                res.status(201).json({ message: "Usuário cadastrado com sucesso, já pode se autenticar." });
             }
         }
     } catch (error) {
-        console.log(error);
-        
+        console.error(error);
+
         res.status(500).json({ message: "Ocorreu um erro interno no servidor." });
     }
 }
@@ -45,10 +46,10 @@ export async function userLogin(req, res) {
 
             if (user) {
                 const validacao = await bcrypt.compare(password, user.password);
-                
+
                 if (validacao) {
                     const acessToken = getToken({ "user": `${user._id}` }, "30m");
-                    
+
                     res.status(200).json(acessToken);
                 } else {
                     res.status(401).json({ message: "Não autenticado, verifique seus dados e tente novamente." });
@@ -58,8 +59,8 @@ export async function userLogin(req, res) {
             }
         }
     } catch (error) {
-        console.log(error);
-        
+        console.error(error);
+
         res.status(500).json({ message: "Ocorreu um erro interno no servidor." });
     }
 }
@@ -77,19 +78,23 @@ export async function userUpdate(req, res) {
             res.status(400).json({ message: "Email e/ou Senha não podem ser alterados por aqui, remova-os e tente novamente." });
         } else {
             user.nome = nome ?? user.nome;
-            if (actived != undefined || actived != null) user.actived = actived;
-            if (deleted != undefined || deleted != null) user.deleted = deleted;
+            if (actived != undefined || actived != null) {
+                user.actived = actived;
+            }
+            if (deleted != undefined || deleted != null) {
+                user.deleted = deleted;
+            }
 
             await Users.findByIdAndUpdate(id, user);
 
             res.status(200).json({ message: "Alterado com sucesso." });
         }
     } catch (error) {
-        console.log(error);
-        
         if (error.kind == 'ObjectId') {
             res.status(400).json({ message: "Id passado não é válido. Verifique." });
         } else {
+            console.error(error);
+
             res.status(500).json({ message: "Ocorreu um erro interno no servidor." });
         }
     }
@@ -105,8 +110,8 @@ export async function userListAll(req, res) {
             res.status(200).json(users);
         }
     } catch (error) {
-        console.log(error);
-        
+        console.error(error);
+
         res.status(500).json({ message: "Ocorreu um erro interno no servidor." });
     }
 }

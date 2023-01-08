@@ -4,12 +4,16 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 export const getToken = (payload, time) => {
-    let acessToken = jwt.sign(payload, process.env.SECRET_TOKEN, { expiresIn: `${time}` });
-    
-    const { exp, iat } = jwt.verify(acessToken, process.env.SECRET_TOKEN);
-    const expiresIn = exp - iat;
-    
-    return { acessToken, type: "bearer", expiresIn }
+    try {
+        let acessToken = jwt.sign(payload, process.env.SECRET_TOKEN, { expiresIn: `${time}` });
+
+        const { exp, iat } = jwt.verify(acessToken, process.env.SECRET_TOKEN);
+        const expiresIn = exp - iat;
+
+        return { acessToken, type: "bearer", expiresIn }
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 export function authorization(req, res, next) {
@@ -18,14 +22,12 @@ export function authorization(req, res, next) {
             res.status(401).json({ message: "Token required." });
         } else {
             let acessToken = req.headers['authorization'].split(' ')[1];
-            
+
             jwt.verify(acessToken, process.env.SECRET_TOKEN);
-            
+
             next();
         }
     } catch (error) {
-        console.log(error.message);
-        
         switch (error.message) {
             case "jwt expired":
                 res.status(401).json({ message: "token expirado" });
@@ -37,7 +39,9 @@ export function authorization(req, res, next) {
                 res.status(401).json({ message: "token inválido" });
                 break;
             default:
-                res.status(500).json({ message: "Ocorreu um erro interno no servidor." });
+                console.error(error.message);
+                
+                res.status(500).json({ message: "Ocorreu um erro interno no servidor. Verifique o token" });
         }
     }
 }

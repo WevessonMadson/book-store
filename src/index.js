@@ -6,11 +6,6 @@ import usersRouters from "./routes/users_routers.js";
 const app = express();
 const routes = Router();
 
-//Rota raiz
-routes.post('/', (req, res) => {
-    res.status(200).json({ message: "Bem vindo a nossa API!" })
-});
-
 routes.use(usersRouters, booksRouters);
 
 app.use(express.json());
