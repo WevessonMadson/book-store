@@ -31,9 +31,10 @@ export async function getBooks(req, res) {
 
         if (!id) {
             const books = await Books.find();
-
-            if (!books) {
+            
+            if (books.length === 0) {
                 res.status(204);
+                res.end();
             } else {
                 res.status(200).json(books);
             }
@@ -42,6 +43,7 @@ export async function getBooks(req, res) {
 
             if (!book) {
                 res.status(204);
+                res.end();
             } else {
                 res.status(200).json(book);
             }
